@@ -6,6 +6,3 @@ at Simon Fraser Universiy in British Columbia, Canada.
 You can find the Instructions in the PDF titled "Instructions".
 
 If you would like to see what was provided by my professor Dr. Yuepeng Wang, you can look at the Repo's first ever commit.
-
-Please ignore the z3 build files.
- - Z3 has issues on my system and the only solution is to include z3/build files in my project dir
