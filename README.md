@@ -5,5 +5,5 @@ at Simon Fraser Universiy in British Columbia, Canada.
 
 You can find the Instructions in the PDF titled "Instructions".
 
-If you would like to see what was provided by my professor Dr. Yuepeng Wang, you can look at the Repo's first even commit.
+If you would like to see what was provided by my professor Dr. Yuepeng Wang, you can look at the Repo's first ever commit.
 
