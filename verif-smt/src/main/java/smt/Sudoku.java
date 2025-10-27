@@ -48,12 +48,11 @@ public class Sudoku {
             
             //----- CONSTRAINT 2: ROW CONSTRAINT -----
 
-            //
             for (int i = 0; i < gLength; i++) {
                 // for each row we store the chosen number then use mkDistinct to make sure they are unique
                 Expr[] rowExpressions = new Expr[gWidth];
                 for (int j = 0; j < gWidth; j++) {
-                    // check the following in solver: (d_i_j >= 1) && (d_i_j <= 9) 
+                    // check the following in solver: (d_i_j >= 1) && (d_i_j <= 9) for each row
                     solver.add(ctx.mkAnd(ctx.mkGe(d_i_j[i][j], ctx.mkInt(1)), ctx.mkLe(d_i_j[i][j], ctx.mkInt(9))));
                     //store the chosen number in the rowExpressions array
                     rowExpressions[j] = d_i_j[i][j];
@@ -64,8 +63,21 @@ public class Sudoku {
 
             //----- CONSTRAINT 3: COLUMN CONSTRAINT -----
             
+            //same logic as row constraints, but the loops are switched
+            for (int j = 0; j < gWidth; j++) {
+                Expr[] columnExpressions = new Expr[gLength];
+                for (int i = 0; i < gLength; i++) {
+                    // check the following in solver: (d_i_j >= 1) && (d_i_j <= 9) for each column
+                    solver.add(ctx.mkAnd(ctx.mkGe(d_i_j[i][j], ctx.mkInt(1)), ctx.mkLe(d_i_j[i][j], ctx.mkInt(9))));
+                    columnExpressions[i] = d_i_j[i][j];
+                }
+                //again use mkDistinct to make sure the numbers in the column are unique
+                solver.add(ctx.mkDistinct(columnExpressions));
+            }
+
 
             //----- CONSTRAINT 4: 3x3 SUBGRID CONSTRAINT -----
+            
 
 
             // ----- CHECKING AND PRINTING SAT OR NO SOLUTION -----
