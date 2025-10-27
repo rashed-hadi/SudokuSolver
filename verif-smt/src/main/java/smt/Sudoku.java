@@ -114,7 +114,7 @@ public class Sudoku {
                         result[i][j] = v.getInt();
                     }
                 }
-                writeGridToFile(result, outPath);
+                writeOutput(result, outPath);
             //if unsat, print no solution
             } else {
                 System.out.println("No Solution");
@@ -127,12 +127,12 @@ public class Sudoku {
     }
 
     //helper function to read input in to a 2d array 
-    static int[][] readInput(String filePath) {
+    static int[][] readInput(String inPath) {
 
         //extract all lines from the file
         java.util.List<String> lines;
         try {
-            lines = java.nio.file.Files.readAllLines(java.nio.file.Paths.get(filePath));
+            lines = java.nio.file.Files.readAllLines(java.nio.file.Paths.get(inPath));
         } catch (java.io.IOException e) {
             throw new RuntimeException("Reading input failed!", e);
         }
@@ -140,10 +140,10 @@ public class Sudoku {
         java.util.List<int[]> rows = new java.util.ArrayList<>();
         //for each line (row), split them into seperate integers
         for (String line : lines) {
-            String[] tokens = line.trim().split("\\s+");
-            int[] row = new int[tokens.length];
-            for (int i = 0; i < tokens.length; i++) {
-                row[i] = Integer.parseInt(tokens[i]);
+            String[] lineSplit = line.trim().split("\\s+");
+            int[] row = new int[lineSplit.length];
+            for (int i = 0; i < lineSplit.length; i++) {
+                row[i] = Integer.parseInt(lineSplit[i]);
             }
             rows.add(row);
         }
@@ -159,21 +159,21 @@ public class Sudoku {
     }
 
     //helper function to write the solved grid to output file
-    static void writeGridToFile(int[][] grid, String filePath) {
+    static void writeOutput(int[][] grid, String outPath) {
         //create a list of strings to store the lines
         java.util.List<String> lines = new java.util.ArrayList<>();
         //for each row, create a string for that row and and too the lines
         for (int i = 0; i < grid.length; i++) {
-            StringBuilder b = new StringBuilder();
+            StringBuilder sb = new StringBuilder();
             for (int j = 0; j < grid[i].length; j++) {
-                if (j > 0) b.append(' ');
-                b.append(grid[i][j]);
+                if (j > 0) sb.append(' ');
+                sb.append(grid[i][j]);
             }
-            lines.add(b.toString());
+            lines.add(sb.toString());
         }
         //try to wtite in file
         try {
-            java.nio.file.Files.write(java.nio.file.Paths.get(filePath), lines);
+            java.nio.file.Files.write(java.nio.file.Paths.get(outPath), lines);
         } catch (java.io.IOException e) {
             throw new RuntimeException("Writing to output failed!", e);
         }
