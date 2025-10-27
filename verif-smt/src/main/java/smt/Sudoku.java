@@ -1,3 +1,7 @@
+// Title: Sudoku Solver
+// Author: Rashed Hadi
+// Date: 2025-10-26
+
 package smt;
 
 import com.microsoft.z3.*;
@@ -75,12 +79,27 @@ public class Sudoku {
                 solver.add(ctx.mkDistinct(columnExpressions));
             }
 
-
             //----- CONSTRAINT 4: 3x3 SUBGRID CONSTRAINT -----
             
-
+            //larger loop will iterate through the subgrids
+            for (int i = 0; i < gLength; i += 3) {
+                for (int j = 0; j < gWidth; j += 3) {
+                    Expr[] subgridExpressions = new Expr[9];
+                    //innter loops will iterate through the values in the subgrid
+                    for (int k = 0; k < 3; k++) {
+                        for (int r = 0; r < 3; r++) {
+                            // check the following in solver: (d_i_j >= 1) && (d_i_j <= 9) for each value in subgrid
+                            solver.add(ctx.mkAnd(ctx.mkGe(d_i_j[i + k][j + r], ctx.mkInt(1)), ctx.mkLe(d_i_j[i + k][j + r], ctx.mkInt(9))));
+                            subgridExpressions[k * 3 + r] = d_i_j[i + k][j + r];
+                        }
+                    }
+                    //again use mkDistinct to make sure the numbers in the subgrid are unique
+                    solver.add(ctx.mkDistinct(subgridExpressions));
+                }
+            }
 
             // ----- CHECKING AND PRINTING SAT OR NO SOLUTION -----
+
             //check if sat or unsat
             Status status = solver.check();
             //if sat, get the model and write to file
